@@ -39,7 +39,7 @@ def sort_dicom_files_by_instance_number_and_get_voxel_spacing(dicom_file_paths):
     voxel_spacing = np.abs(pixel_spacing + [slice_thickness])
     return sorted_dicom_file_paths, voxel_spacing
 
-
+finding_dcm_organized = False
 ensemple = False 
 if ensemple:
     name_or_path_fn = ["28a7cd44f5bcd3e6cc760b65c7e0d54depoch=10.ckpt","56ce1a7d241dc342982f5466c4a9d7ef.ckpt", "64a91b25f84141d32852e75a3aec7305.ckpt",\
@@ -50,7 +50,8 @@ else:
     name_or_path = ['/Code/non_smoking_2_processing/nii2dcm/sybil/28a7cd44f5bcd3e6cc760b65c7e0d54depoch=10.ckpt']
     calibrator_path='/Code/non_smoking_2_processing/nii2dcm/sybil/28a_calibrator.p'
 
-finding_dcm_organized = False
+
+
 if __name__=='__main__':
     
     path  =  "/Data/sophie1/"  # containing .nii.gz files
