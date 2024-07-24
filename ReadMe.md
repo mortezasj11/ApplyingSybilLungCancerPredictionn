@@ -1,20 +1,21 @@
-# If the downloaded DICOM data do not have .dcm like in Sophie's data:
+# SYBIL Lung Cancer Prediction
+
+## Setup Instructions
+
+### Adding `.dcm` Extension to DICOM Data
+If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
+```sh
 python Adding_dot_dcm.py
 
-# To download the model(s), not necessary but good to avoid permission error:
+### To download the model(s), not necessary but good to avoid permission error:
 python downloading_model.py
 
-# Running on a directory containing multiple Dicoms
+### Running on a directory containing multiple Dicoms
 see main_sophie_data.py
 
 
-# Running Docker (Have your folders in the mapping part)
+### Running Docker (Have your folders in the mapping part)
 docker run -it --rm --gpus "device=7" --shm-size=192G --user $(id -u):$(id -g) --cpuset-cpus=100-120 \
--v /rsrch1/ip/msalehjahromi/codes/:/Code \
--v /rsrch7/wulab/Mori:/Data \
---name sybit11 sybit:Mori
-
-docker run -it --rm --gpus "device=6" --shm-size=192G --cpuset-cpus=150-174 \
 -v /rsrch1/ip/msalehjahromi/codes/:/Code \
 -v /rsrch7/wulab/Mori:/Data \
 --name sybit11 sybit:Mori
@@ -32,14 +33,9 @@ when not --user:
     nii2dcm  NOT WORKS
     Permission denied: '/Code/non_smoking_2_processing/nii2dcm/Dicom_temp/IM_0001'
 
-# for test (1 folder)cd /ho 
-python 0_test.py
 
-# for predicting 
-python 1_predict_loop.py
-
-# About SYBIL and DICOM
-## Giving addditional Information (`voxel_spacing`)
+## About SYBIL and DICOM
+#### Giving addditional Information (`voxel_spacing`)
 class Serie:
     def __init__(
         self,
