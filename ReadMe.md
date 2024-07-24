@@ -3,8 +3,9 @@
 ## Setup Instructions
 
 ### Adding `.dcm` Extension to DICOM Data
-If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
 ```sh
+If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
+
 python Adding_dot_dcm.py
 
 ### To download the model(s), not necessary but good to avoid permission error:
@@ -33,7 +34,7 @@ when not --user:
     nii2dcm  NOT WORKS
     Permission denied: '/Code/non_smoking_2_processing/nii2dcm/Dicom_temp/IM_0001'
 
-
+```sh
 ## About SYBIL and DICOM
 #### Giving addditional Information (`voxel_spacing`)
 class Serie:
