@@ -3,7 +3,7 @@
 ## Setup Instructions
 
 ### Adding `.dcm` Extension to DICOM Data
-```sh
+
 If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
 
 python Adding_dot_dcm.py
@@ -15,24 +15,6 @@ python downloading_model.py
 see main_sophie_data.py
 
 
-### Running Docker (Have your folders in the mapping part)
-docker run -it --rm --gpus "device=7" --shm-size=192G --user $(id -u):$(id -g) --cpuset-cpus=100-120 \
--v /rsrch1/ip/msalehjahromi/codes/:/Code \
--v /rsrch7/wulab/Mori:/Data \
---name sybit11 sybit:Mori
-
-pip install nii2dcm, lungmask
-pip install lungmask
-
-when --user $(id -u):$(id -g)
-    nii2dcm /Code/non_smoking_2_processing/nii2dcm/493464_080606_sybil.nii.gz /Code/non_smoking_2_processing/nii2dcm/Dicom_temp
-
-when --user $(id -u):$(id -g)
-    Permission denied: '/Data/non_smoker_March/493464_D/090320_'
-
-when not --user:
-    nii2dcm  NOT WORKS
-    Permission denied: '/Code/non_smoking_2_processing/nii2dcm/Dicom_temp/IM_0001'
 
 ```sh
 ## About SYBIL and DICOM
@@ -128,3 +110,23 @@ torchvision==0.12.0     # Gave Error!!
 (0073, 1004) [Stentor Local AETitle Element]     ST: 'STENTOR_SCP'
 (0073, 1006) [Stentor Transfer Syntax Value]     LO: '1.2.840.10008.1.2.1'
 (7fe0, 0010) Pixel Data                          OW: Array of 524288 elements
+```
+
+### Running Docker (Have your folders in the mapping part)
+docker run -it --rm --gpus "device=7" --shm-size=192G --user $(id -u):$(id -g) --cpuset-cpus=100-120 \
+-v /rsrch1/ip/msalehjahromi/codes/:/Code \
+-v /rsrch7/wulab/Mori:/Data \
+--name sybit11 sybit:Mori
+
+pip install nii2dcm, lungmask
+pip install lungmask
+
+when --user $(id -u):$(id -g)
+    nii2dcm /Code/non_smoking_2_processing/nii2dcm/493464_080606_sybil.nii.gz /Code/non_smoking_2_processing/nii2dcm/Dicom_temp
+
+when --user $(id -u):$(id -g)
+    Permission denied: '/Data/non_smoker_March/493464_D/090320_'
+
+when not --user:
+    nii2dcm  NOT WORKS
+    Permission denied: '/Code/non_smoking_2_processing/nii2dcm/Dicom_temp/IM_0001'
