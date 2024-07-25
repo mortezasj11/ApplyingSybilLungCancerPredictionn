@@ -31,7 +31,7 @@ python main_sophie_data.py
 
 
 ## About SYBIL and DICOM
-    **Giving addditional Information (`voxel_spacing`)**
+**Giving addditional Information (`voxel_spacing`)**
 
 ```sh
 class Serie:
