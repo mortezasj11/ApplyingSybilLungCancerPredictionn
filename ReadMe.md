@@ -11,8 +11,11 @@ python Adding_dot_dcm.py
 ### To download the model(s), not necessary but good to avoid permission error:
 python downloading_model.py
 
-### Running on a directory containing multiple Dicoms
-see main_sophie_data.py
+### Running on a directory containing multiple Dicoms with/without ensempling
+**It goes until third-level path, modify based on your own dataset foldering.**
+
+python main_sophie_data.py --ensemble
+python main_sophie_data.py
 
 
 

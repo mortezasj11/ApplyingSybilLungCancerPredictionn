@@ -12,6 +12,7 @@ from src.segment import make_save_seg, convert_to_dictionary
 import subprocess
 from src.Nifti2Dicom  import nifti2dicom_1file
 import pydicom
+import argparse
 
 
 def get_dicom_file_paths(case_i_dics):
@@ -39,29 +40,35 @@ def sort_dicom_files_by_instance_number_and_get_voxel_spacing(dicom_file_paths):
     voxel_spacing = np.abs(pixel_spacing + [slice_thickness])
     return sorted_dicom_file_paths, voxel_spacing
 
+
+
+
 finding_dcm_organized = False
-ensemple = False 
-if ensemple:
-    name_or_path_fn = ["28a7cd44f5bcd3e6cc760b65c7e0d54depoch=10.ckpt","56ce1a7d241dc342982f5466c4a9d7ef.ckpt", "64a91b25f84141d32852e75a3aec7305.ckpt",\
-                    "65fd1f04cb4c5847d86a9ed8ba31ac1a.ckpt", '624407ef8e3a2a009f9fa51f9846fe9a.ckpt']
-    name_or_path = [os.path.join('/Code/non_smoking_2_processing/nii2dcm/sybil/', i) for i in name_or_path_fn] 
-    calibrator_path = "/Code/non_smoking_2_processing/nii2dcm/sybil/sybil_ensemble.p"
-else:
-    name_or_path = ['/Code/non_smoking_2_processing/nii2dcm/sybil/28a7cd44f5bcd3e6cc760b65c7e0d54depoch=10.ckpt']
-    calibrator_path='/Code/non_smoking_2_processing/nii2dcm/sybil/28a_calibrator.p'
-
-
-
 if __name__=='__main__':
-    
-    path  =  "/Data/sophie1/"  # containing .nii.gz files
+    parser = argparse.ArgumentParser(description='Process DICOM files for Sybil Lung Cancer Prediction.')
+    parser.add_argument('--ensemble', action='store_true', help='Use ensemble model')                 # Default is False
+    parser.add_argument('--finding_dcm_organized', action='store_true', help='Organized DICOM files') # Default is False
+    args = parser.parse_args()
+    finding_dcm_organized = args.finding_dcm_organized
+    ensemble = args.ensemble
+
+    if ensemble:
+        name_or_path_fn = ["28a7cd44f5bcd3e6cc760b65c7e0d54depoch=10.ckpt","56ce1a7d241dc342982f5466c4a9d7ef.ckpt", "64a91b25f84141d32852e75a3aec7305.ckpt",\
+                        "65fd1f04cb4c5847d86a9ed8ba31ac1a.ckpt", '624407ef8e3a2a009f9fa51f9846fe9a.ckpt']
+        name_or_path = [os.path.join('/Code/non_smoking_2_processing/nii2dcm/sybil/', i) for i in name_or_path_fn] 
+        calibrator_path = "/Code/non_smoking_2_processing/nii2dcm/sybil/sybil_ensemble.p"
+    else:
+        name_or_path = ['/Code/non_smoking_2_processing/nii2dcm/sybil/28a7cd44f5bcd3e6cc760b65c7e0d54depoch=10.ckpt']
+        calibrator_path='/Code/non_smoking_2_processing/nii2dcm/sybil/28a_calibrator.p'
+
+    path  =  "/Data/sophie/"  # containing .nii.gz files
     path_csv  = "/Data/sophieCSV/"; os.makedirs(path_csv, exist_ok=True)
 
+    errors = []
     output_list_all = []
     dicom_files = []
     counter = 0
     for mrn in os.listdir(path):
-
         mrn_path = os.path.join(path, mrn)
         # Check if it's a directory
         if os.path.isdir(mrn_path):
@@ -92,18 +99,26 @@ if __name__=='__main__':
                                 csv_file = os.path.join(path_csv, mrn + '.csv')  # The risks will be saved here.
 
                                 model = Sybil(name_or_path = name_or_path, calibrator_path=calibrator_path) 
+                                try:
+                                    serie_i = Serie(dcm_files)     # serie_i = Serie(dcm_files, voxel_spacing=voxel_spacing) #serie_i = Serie(dcm_files)
 
-                                serie_i = Serie(dcm_files)     # serie_i = Serie(dcm_files, voxel_spacing=voxel_spacing) #serie_i = Serie(dcm_files)
-                                scores_i = model.predict([serie_i])# model prediction
-                                result = convert_to_dictionary(scores_i, mrn)# saving to csv file
-                                result["#slices"] = len(dcm_files)
-                                output_list.append((result))
+                                    scores_i = model.predict([serie_i])# model prediction
+                                    result = convert_to_dictionary(scores_i, mrn)# saving to csv file
+                                    result["#slices"] = len(dcm_files)
+                                    output_list.append((result))
 
-                                df = pd.DataFrame(output_list)
-                                output_list_all.append((result))
-                                counter += 1
+                                    df = pd.DataFrame(output_list)
+                                    output_list_all.append((result))
+                                    counter += 1
 
-                                text_name = "ensemble_" if ensemple else ""
-                                csv_file_all = os.path.join(path_csv, text_name + str(counter) +'_all.csv')
-                                df_all = pd.DataFrame(output_list_all)
-                                df_all.to_csv( csv_file_all , index=False)
+                                    text_name = "ensemble_" if ensemble else ""
+                                    csv_file_all = os.path.join(path_csv, text_name + str(counter) +'_all.csv')
+                                    df_all = pd.DataFrame(output_list_all)
+                                    df_all.to_csv( csv_file_all , index=False)
+                                except Exception as e:
+                                    print(f"Error in prediction or saving results: {e}", mrn)
+                                    errors.append(mrn)
+                                    continue
+    print('errors', errors)
+
+#python main_sophie_data.py --ensemble
