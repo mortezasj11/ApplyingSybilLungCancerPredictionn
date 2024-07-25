@@ -7,28 +7,33 @@
 
 1. Adding `.dcm` Extension to DICOM Data
 
-If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
-
+    If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
+```sh
 python Adding_dot_dcm.py
+```
 
 
 
 2. To download the model(s), not necessary but good to avoid permission error:
+```sh
 python downloading_model.py
-
+```
 
 
 3. Running on a directory containing multiple Dicoms with/without ensempling
 **It goes until third-level path, modify based on your own dataset foldering.**
 
+```sh
 python main_sophie_data.py --ensemble
 python main_sophie_data.py
+```
 
 
+
+## About SYBIL and DICOM
+    **Giving addditional Information (`voxel_spacing`)**
 
 ```sh
-## About SYBIL and DICOM
-#### Giving addditional Information (`voxel_spacing`)
 class Serie:
     def __init__(
         self,
