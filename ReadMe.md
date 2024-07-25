@@ -5,7 +5,7 @@
 
 
 
-### Adding `.dcm` Extension to DICOM Data
+1. Adding `.dcm` Extension to DICOM Data
 
 If the downloaded DICOM data does not have `.dcm` like in Sophie's data, run:
 
@@ -13,12 +13,12 @@ python Adding_dot_dcm.py
 
 
 
-### To download the model(s), not necessary but good to avoid permission error:
+2. To download the model(s), not necessary but good to avoid permission error:
 python downloading_model.py
 
 
 
-### Running on a directory containing multiple Dicoms with/without ensempling
+3. Running on a directory containing multiple Dicoms with/without ensempling
 **It goes until third-level path, modify based on your own dataset foldering.**
 
 python main_sophie_data.py --ensemble
